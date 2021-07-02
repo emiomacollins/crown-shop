@@ -1,4 +1,6 @@
 import React from 'react';
+import { useRef } from 'react';
+import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import CheckoutList from '../../COMPONENTS/Checkout/CheckoutList';
 import StripePayButton from '../../COMPONENTS/Checkout/StripePayButton';
@@ -6,6 +8,11 @@ import { getCartTotal } from '../../REDUX/cartState';
 
 function Checkout() {
 	const price = useSelector(getCartTotal);
+	const messageRef = useRef(null);
+
+	useEffect(() => {
+		messageRef.current.scrollIntoView({ behaviour: 'smooth' });
+	}, []);
 
 	return (
 		<div className="checkout block">
@@ -14,7 +21,7 @@ function Checkout() {
 				<StripePayButton price={price} />
 			</div>
 
-			<div className="message">
+			<div ref={messageRef} className="message">
 				<div className="container">
 					<p className="bold heading">
 						please use the following test card information

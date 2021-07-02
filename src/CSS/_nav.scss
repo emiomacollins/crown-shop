@@ -1,0 +1,199 @@
+.nav {
+    box-shadow: var(--shadow);
+    position: sticky;
+    top: 0;
+    left: 0;
+    z-index: 15;
+    background: var(--color-light);
+
+    & .container {
+        display: flex;
+        align-items: center;
+        height: var(--nav-height);
+    }
+
+    .fas {
+        font-size: var(--size-500);
+    }
+
+    &__theme-switch {
+        cursor: pointer;
+    }
+
+    &__logo {
+        width: 50px;
+    }
+
+    &__hamburger {
+        display: none;
+
+        & .line {
+            width: 35px;
+            height: 3px;
+            background-color: #ecf0f1;
+            display: block;
+            margin: 8px auto;
+            -webkit-transition: all 0.3s ease-in-out;
+            -o-transition: all 0.3s ease-in-out;
+            transition: all 0.3s ease-in-out;
+            background: var(--color-dark);
+        }
+    }
+
+    &__links {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 4rem;
+        width: 100%;
+
+        .option {
+            padding: 1rem 1.5rem;
+        }
+
+    }
+
+    &__link {
+        position: relative;
+        padding: 1rem 0;
+        background: transparent;
+        border: 0;
+        font-size: var(--size-400);
+        color: inherit;
+
+        &::after {
+            content: '';
+            display: inline-block;
+            width: 100%;
+            height: 2px;
+            background: var(--color-dark);
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            transform: scaleX(0);
+            transform-origin: right;
+            transition: .3s;
+        }
+
+        &:hover {
+            &::after {
+                transform: scaleX(1);
+            }
+        }
+    }
+
+    &__controls {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        gap: 2rem;
+        margin-right: -2rem;
+    }
+
+    &__userprofile {
+        &__img {
+            width: 45px;
+            height: 45px;
+            // border: 3.5px solid var(--color-dark);
+            border-radius: 100%;
+            background-position: center;
+            background-size: 100%;
+        }
+    }
+
+    @media (max-width:600px) {
+
+        &__userprofile {
+            display: none;
+        }
+
+        & .container {
+            display: grid;
+            align-items: center;
+            grid-template-columns: 1fr 1fr;
+            align-items: flex-endc;
+        }
+
+        &__logo {}
+
+        &__theme-switch {
+            position: fixed;
+            font-size: var(--size-700) !important;
+            background: var(--color-dark);
+            color: var(--color-light);
+            border-radius: 2rem;
+            box-shadow: var(--shadow2);
+            padding: 1rem;
+            bottom: 2rem;
+            right: 2rem;
+
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity .1s;
+        }
+
+
+        &__hamburger {
+            justify-self: right;
+            display: inline-block;
+        }
+
+        &__links {
+            grid-column: span 2;
+            position: absolute;
+            height: calc(100vh - var(--nav-height));
+            background: var(--color-light);
+            top: var(--nav-height);
+            left: 0;
+
+            display: flex;
+            flex-direction: column;
+            gap: 4rem;
+
+            transform: scaleX(0);
+            opacity: 0;
+            transform-origin: left;
+            transition: .3s;
+
+            .option {
+                padding: 1rem 1.5rem;
+            }
+
+        }
+
+        &.expanded {
+            .nav__theme-switch {
+                transition-delay: .3s;
+                opacity: 1;
+                pointer-events: visible;
+            }
+
+            .nav__links {
+                transform: scaleX(1);
+                opacity: 1;
+            }
+
+            .nav__hamburger {
+                & .line:nth-child(1) {
+                    width: 25px;
+                }
+
+                & .line:nth-child(2) {
+                    width: 35px;
+                }
+
+                & .line:nth-child(3) {
+                    opacity: 0;
+                }
+
+                & .line {
+                    -webkit-transform: rotate(30deg);
+                    -ms-transform: rotate(30deg);
+                    -o-transform: rotate(30deg);
+                    transform: rotate(30deg);
+                }
+            }
+        }
+
+    }
+}

@@ -1,0 +1,97 @@
+.authentication {
+    .container {
+        min-height: calc(100vh - 7rem);
+        display: grid;
+        grid-template-columns: 1fr;
+        place-content: center;
+        gap: 10rem;
+        align-items: flex-start;
+        max-width: 1000px;
+
+        @include desktop {
+            grid-template-columns: 1fr 1fr;
+        }
+    }
+
+    &__title {
+        margin-bottom: 5rem;
+        font-size: var(--size-700);
+        text-transform: capitalize;
+        width: 100%;
+    }
+
+    .signin {
+        max-width: 700px;
+        display: grid;
+        justify-items: center;
+
+        @include desktop {
+            max-width: none;
+        }
+    }
+
+    .signup {
+        max-width: 700px;
+        display: grid;
+        justify-items: center;
+
+        @include desktop {
+            max-width: none;
+        }
+    }
+
+}
+
+.form {
+
+    color: var(--color-dark);
+    width: 100%;
+
+    .message {
+        font-size: var(--size-300);
+        color: var(--color-dark);
+        position: relative;
+        top: -1.5rem;
+
+        &--error {
+            color: rgb(255, 131, 109);
+        }
+    }
+
+    &__control {
+        position: relative;
+        width: 100%;
+        margin-bottom: 5rem;
+
+        &:focus-within {
+            .form__label {
+                transform: translateY(-1rem);
+                font-size: var(--size-300);
+                opacity: .8;
+            }
+        }
+    }
+
+
+    &__label {
+        position: absolute;
+        bottom: 3rem;
+        left: 0;
+        font-size: var(--size-400);
+        opacity: .5;
+        letter-spacing: .1em;
+        font-weight: 300;
+        transition: .3s;
+    }
+
+    &__input {
+        padding-top: 1rem;
+        border: 0;
+        border-bottom: 1px solid var(--color-dark);
+        outline: none;
+        width: 100%;
+        font-size: var(--size-400);
+        background: var(--color-light);
+        color: var(--color-dark);
+    }
+}

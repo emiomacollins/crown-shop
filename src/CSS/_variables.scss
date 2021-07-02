@@ -1,0 +1,41 @@
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400&display=swap');
+
+
+:root {
+
+    --color-light: #fdfdfd;
+    --color-transparent: hsla(0, 0%, 99%, 0.473);
+    --color-dark: #383838;
+    --color-black: #000;
+    --color-mid: #496970;
+    --color-primary: #f3344a;
+    --color-secondary: #4c8bf5;
+
+    --nav-height: 7rem;
+
+    --shadow: 0px 2px 10px rgba(74, 98, 104, 0.07);
+    --shadow2: 0px 0 10px hsla(0, 0%, 22%, 0.2);
+
+    --size-300: 1.3rem;
+    --size-400: 1.7rem;
+    --size-500: 2rem;
+    --size-600: 2.5rem;
+    --size-700: 3rem;
+    --size-800: 3.5rem;
+}
+
+.darkmode {
+    --color-light: #0d0d0d;
+    --color-transparent: #0d0d0d7e;
+    --color-dark: #fdfdfd;
+    --color-black: #fff;
+    --color-secondary: #4c8bf5;
+
+
+    --shadow: 0px 2px 10px #00000060;
+    --shadow2: 0px 0 10px hsla(0, 0%, 74%, 0.05);
+
+}
+
+$tabletMediaQuery: 700px;
+$desktopMediaQuery: 1100px;

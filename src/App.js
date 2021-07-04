@@ -26,8 +26,9 @@ import { useEffect } from 'react';
 function App() {
 	// OLD CODE WITH BUG
 	// BUG: RERENDERS APP ON AUTH STATE CHANGE
-	// CUS IT USES THE AUTHUSER STATE
+	// CUS IT USES THE AUTHUSER AS A STATE
 	// BUG 2: ALSO RERENDERS THE APP ON USERDATA CHANGE
+	// FOR THE SAME REASON
 
 	// const [authUser] = useAuthState(auth);
 	// const userDocumentQuery = firestore.doc(`users/${authUser?.uid}`);
@@ -58,7 +59,6 @@ function App() {
 
 			// store the document on redux
 			// will be null if authUser is also null
-			// meaning no user is logged in
 			dispatch(setUserData(userData));
 		});
 		return unsuscribe;

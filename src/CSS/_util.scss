@@ -24,7 +24,6 @@
     transition: .3s;
     text-align: center;
 
-
     &:hover {
         background: transparent;
         color: var(--color-dark);
@@ -60,5 +59,4 @@
 .columns {
     display: flex;
     gap: 2rem;
-
 }

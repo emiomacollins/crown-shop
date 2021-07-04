@@ -9,8 +9,6 @@ For example, a blogging app might need to track who is logged in, information on
 
 
 
-
-
 STRUCTURE YOUR COMPONENTS BY THE PAGES THEY WERE USED IN FIRST
 YOU CAN PUT TRULY REUSABLE COMPONENTS LIKE BUTTONS ON A REUSABLE FOLDER
 

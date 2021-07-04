@@ -1,4 +1,4 @@
-import { combineReducers, configureStore } from '@reduxjs/toolkit';
+import { combineReducers, configureStore, getDefaultMiddleware } from '@reduxjs/toolkit';
 
 import cartReducer from './cartState';
 import themeReducer from './themeState';
@@ -25,6 +25,7 @@ const store = configureStore({
 			collections: collectionsReducer,
 		})
 	),
+	middleware: [...getDefaultMiddleware({ serializableCheck: false })],
 });
 
 export default store;

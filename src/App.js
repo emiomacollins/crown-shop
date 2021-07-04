@@ -44,6 +44,7 @@ function App() {
 	// }, [userData]);
 
 	const dispatch = useDispatch();
+
 	useEffect(() => {
 		const unsuscribe = auth.onAuthStateChanged(async (authUser) => {
 			const signedIn = authUser ? true : false;

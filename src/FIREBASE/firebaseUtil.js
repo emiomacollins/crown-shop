@@ -59,3 +59,18 @@ export async function createUserDocument(user, additionalData) {
 	// to add to document fields we use .set()
 	// to add to a collection we use .add()
 }
+
+export async function addFirestoreCollection(name, documents) {
+	const collectionRef = firestore.collection(name);
+	const batch = firestore.batch();
+
+	// create a document for each collection
+	documents.forEach((document) => {
+		// to auto generate
+		const newDocumentRef = collectionRef.doc();
+		// add to batch
+		batch.set(newDocumentRef, document);
+	});
+
+	return await batch.commit();
+}

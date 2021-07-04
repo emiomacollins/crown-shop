@@ -14,14 +14,20 @@ import AuthenticationPage from './PAGES/Authpage/AuthenticationPage';
 import Checkout from './PAGES/Checkout/Checkout';
 
 // FIREBASE
-import { auth, createUserDocument, firestore } from './FIREBASE/firebaseUtil';
+import {
+	addFirestoreCollection,
+	auth,
+	createUserDocument,
+	firestore,
+} from './FIREBASE/firebaseUtil';
 // import { useAuthState } from 'react-firebase-hooks/auth';
 // import { useCollectionData, useDocumentData } from 'react-firebase-hooks/firestore';
 
 // REDUX
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { setSignedIn, setUserData } from './REDUX/userState';
 import { useEffect } from 'react';
+import { getCollectionsList } from './REDUX/collectionsState';
 
 function App() {
 	// OLD CODE WITH BUG
@@ -45,6 +51,8 @@ function App() {
 
 	const dispatch = useDispatch();
 
+	// const collectionsList = useSelector(getCollectionsList);
+
 	useEffect(() => {
 		const unsuscribe = auth.onAuthStateChanged(async (authUser) => {
 			const signedIn = authUser ? true : false;
@@ -62,6 +70,16 @@ function App() {
 			// will be null if authUser is also null
 			dispatch(setUserData(userData));
 		});
+
+		// MIGRATE COLLECTIONS DATA TO FIRESTORE
+
+		// const filteredCollections = collectionsList.map((collection) => {
+		// 	// take only properties you need
+		// 	const { title, routeName, items, imageUrl } = collection;
+		// 	return { title, routeName, items, imageUrl };
+		// });
+		// addFirestoreCollection('collections', filteredCollections);
+
 		return unsuscribe;
 	}, []);
 

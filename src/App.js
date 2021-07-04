@@ -27,7 +27,7 @@ import {
 import { useDispatch, useSelector } from 'react-redux';
 import { setSignedIn, setUserData } from './REDUX/userState';
 import { useEffect } from 'react';
-import { getCollectionsList } from './REDUX/collectionsState';
+import { getCollectionsList, setCollections } from './REDUX/collectionsState';
 
 function App() {
 	// OLD CODE WITH BUG
@@ -75,10 +75,25 @@ function App() {
 
 		// const filteredCollections = collectionsList.map((collection) => {
 		// 	// take only properties you need
-		// 	const { title, routeName, items, imageUrl } = collection;
-		// 	return { title, routeName, items, imageUrl };
+		// 	const { title, items, imageUrl } = collection;
+		// 	return { title, items, imageUrl };
 		// });
 		// addFirestoreCollection('collections', filteredCollections);
+
+		(async function () {
+			// FETCH COLLECTIONS DATA FROM FIRESTORE
+			// AND SET IT IN OUR REDUX STORE
+			const collectionsRef = firestore.collection('collections');
+			const snapShot = await collectionsRef.get();
+
+			const collections = {};
+			snapShot.docs.forEach((doc) => {
+				const collection = doc.data();
+				collections[collection.title] = { id: doc.id, ...collection };
+			});
+
+			dispatch(setCollections(collections));
+		})();
 
 		return unsuscribe;
 	}, []);

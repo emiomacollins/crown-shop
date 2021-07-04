@@ -2,12 +2,12 @@ import React from 'react';
 import { withRouter } from 'react-router-dom';
 
 function CollectionDirectoryItem({ item, history }) {
-	let { title, imageUrl, routeName, size } = item;
+	let { title, imageUrl, size } = item;
 
 	return (
 		<div
 			onClick={() => {
-				history.push(`/shop/${routeName}`);
+				history.push(`/shop/${title}`);
 			}}
 			className={`${size || ''} homepage__directory__item`}
 		>

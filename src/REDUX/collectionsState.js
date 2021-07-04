@@ -2,7 +2,7 @@ import { createSelector, createSlice } from '@reduxjs/toolkit';
 import SHOP_DATA from '../PAGES/Shoppage/data';
 
 const initialState = {
-	collections: SHOP_DATA,
+	collections: {},
 };
 
 const collectionsState = createSlice({

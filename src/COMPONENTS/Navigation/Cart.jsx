@@ -21,6 +21,13 @@ function Cart() {
 		dispatch(toggleExpanded());
 	}
 
+	useEffect(() => {
+		cartIconRef.current.style.transform = 'scale(1.2)';
+		setTimeout(() => {
+			cartIconRef.current.style.transform = 'scale(1)';
+		}, 100);
+	}, [cartItemsCount]);
+
 	const cartItemList = cartItems.map((item) => {
 		const { id, imageUrl, name, price, quantity } = item;
 
@@ -38,13 +45,6 @@ function Cart() {
 	});
 
 	const cartIconRef = useRef(null);
-
-	useEffect(() => {
-		cartIconRef.current.style.transform = 'scale(1.2)';
-		setTimeout(() => {
-			cartIconRef.current.style.transform = 'scale(1)';
-		}, 100);
-	}, [cartItemsCount]);
 
 	return (
 		<div className="cart">
@@ -74,7 +74,9 @@ function Cart() {
 	c0-4.5-3.6-8.1-8.1-8.1S287.3,143.1,287.3,147.6z"
 				/>
 			</svg>
+
 			<span className="cart__count">{cartItemsCount}</span>
+
 			{expanded ? (
 				<div className="cart__dropdown">
 					<div className="cart__items">

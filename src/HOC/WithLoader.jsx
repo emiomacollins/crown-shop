@@ -11,6 +11,7 @@ import {
 function WithLoader(params) {
 	// get selectors and action creators to implement loading logic
 	const { getLoading, getErrorMessage, fetchAction, getData, Component } = params;
+
 	// create a wrapper component that implements the logic
 	// and renders a component, thereby merging it's logic with it
 	function Wrapper() {

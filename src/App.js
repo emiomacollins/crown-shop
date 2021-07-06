@@ -22,7 +22,6 @@ import { auth, createUserDocument, firestore } from './FIREBASE/firebaseUtil';
 import { useDispatch } from 'react-redux';
 import { setSignedIn, setUserData } from './REDUX/userState';
 import { useEffect } from 'react';
-import { fetchCollections } from './REDUX/collectionsState';
 
 function App() {
 	const dispatch = useDispatch();
@@ -44,7 +43,6 @@ function App() {
 			// will be null if authUser is also null
 			dispatch(setUserData(userData));
 		});
-		// dispatch(fetchCollections());
 		return unsuscribe;
 	}, []);
 

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Route } from 'react-router-dom';
+import { Route, withRouter } from 'react-router-dom';
 import CollectionList from '../../COMPONENTS/Shop/CollectionList';
 import Collection from '../../COMPONENTS/Shop/Collection';
 import { useDispatch, useSelector } from 'react-redux';
@@ -9,17 +9,18 @@ import {
 	getCollectionsErrorMessage,
 	getCollectionsLoadingState,
 } from '../../REDUX/collectionsState';
-import Loader from '../../COMPONENTS/Loader';
+// import Loader from '../../COMPONENTS/Loader';
+import WithLoader, { WithCollectionsLoader } from '../../HOC/WithLoader';
 
 function ShopPage({ match }) {
 	// HOW DO I ENCAPSULATE THIS LOGIC TO MAKE IT REUSABLE? (HOC)
-	const dispatch = useDispatch();
+	// const dispatch = useDispatch();
+	// const loading = useSelector(getCollectionsLoadingState);
+	// const errorMessage = useSelector(getCollectionsErrorMessage);
+	// if (loading === true) return <Loader />;
+	// if (loading === false) return <p>{errorMessage}</p>;
+	// if (loading === 'idle') dispatch(fetchCollections());
 	const collections = useSelector(getCollections);
-	const loading = useSelector(getCollectionsLoadingState);
-	const errorMessage = useSelector(getCollectionsErrorMessage);
-	if (loading === true) return <Loader />;
-	if (loading === false) return <p>{errorMessage}</p>;
-	if (loading === 'idle') dispatch(fetchCollections());
 
 	return (
 		<div className="collection-list container">
@@ -36,4 +37,4 @@ function ShopPage({ match }) {
 	);
 }
 
-export default ShopPage;
+export default WithCollectionsLoader(withRouter(ShopPage));

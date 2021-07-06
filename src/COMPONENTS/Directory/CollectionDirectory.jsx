@@ -1,7 +1,11 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
+import WithLoader, { WithCollectionsLoader } from '../../HOC/WithLoader';
 import {
+	fetchCollections,
+	getCollections,
 	getCollectionsAsList,
+	getCollectionsErrorMessage,
 	getCollectionsLoadingState,
 } from '../../REDUX/collectionsState';
 import Loader from '../Loader';
@@ -21,4 +25,4 @@ function CollectionDirectory() {
 	);
 }
 
-export default CollectionDirectory;
+export default WithCollectionsLoader(CollectionDirectory);

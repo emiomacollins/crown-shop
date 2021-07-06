@@ -44,7 +44,7 @@ function App() {
 			// will be null if authUser is also null
 			dispatch(setUserData(userData));
 		});
-		dispatch(fetchCollections());
+		// dispatch(fetchCollections());
 		return unsuscribe;
 	}, []);
 

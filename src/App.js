@@ -14,20 +14,15 @@ import AuthenticationPage from './PAGES/Authpage/AuthenticationPage';
 import Checkout from './PAGES/Checkout/Checkout';
 
 // FIREBASE
-import {
-	addFirestoreCollection,
-	auth,
-	createUserDocument,
-	firestore,
-} from './FIREBASE/firebaseUtil';
+import { auth, createUserDocument, firestore } from './FIREBASE/firebaseUtil';
 // import { useAuthState } from 'react-firebase-hooks/auth';
 // import { useCollectionData, useDocumentData } from 'react-firebase-hooks/firestore';
 
 // REDUX
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { setSignedIn, setUserData } from './REDUX/userState';
 import { useEffect } from 'react';
-import { getCollectionsAsList, setCollections } from './REDUX/collectionsState';
+import { fetchCollections } from './REDUX/collectionsState';
 
 function App() {
 	const dispatch = useDispatch();
@@ -41,30 +36,15 @@ function App() {
 			signedIn && (await createUserDocument(authUser));
 
 			// fetch the document (even for existing users)
-			const userDocumentQuery = firestore.doc(`users/${authUser?.uid}`);
-			const userDataSnapshot = await userDocumentQuery.get();
-			const userData = userDataSnapshot.data();
+			const userRef = firestore.doc(`users/${authUser?.uid}`);
+			const snapShot = await userRef.get();
+			const userData = snapShot.exists ? snapShot.data() : null;
 
 			// store the document on redux
 			// will be null if authUser is also null
 			dispatch(setUserData(userData));
 		});
-
-		(async function () {
-			// FETCH COLLECTIONS DATA FROM FIRESTORE
-			// AND SET IT IN OUR REDUX STORE
-			const collectionsRef = firestore.collection('collections');
-			const snapShot = await collectionsRef.get();
-
-			const collections = {};
-			snapShot.docs.forEach((doc) => {
-				const collection = doc.data();
-				collections[collection.title] = { id: doc.id, ...collection };
-			});
-
-			dispatch(setCollections(collections));
-		})();
-
+		dispatch(fetchCollections());
 		return unsuscribe;
 	}, []);
 

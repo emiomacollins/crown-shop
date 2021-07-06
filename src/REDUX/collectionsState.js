@@ -4,19 +4,19 @@ import { firestore } from '../FIREBASE/firebaseUtil';
 const initialState = {
 	collections: null,
 	loading: 'idle',
-	errorMessage: 'Failed to load collections',
+	errorMessage: 'Failed to load collections, try again',
 };
 
-const fetchCollections = createAsyncThunk(
+export const fetchCollections = createAsyncThunk(
 	'collections/fetchCollections',
 	async (thunkAPI) => {
 		const collectionsRef = firestore.collection('collections');
 		const snapShot = await collectionsRef.get();
 
 		const collections = {};
-		snapShot.docs.forEach((doc, i) => {
-			const document = doc.data();
-			collections[document.title] = { id: document.id, ...document };
+		snapShot.docs.forEach((document) => {
+			const collection = document.data();
+			collections[collection.title] = { id: document.id, ...collection };
 		});
 
 		return collections;
@@ -37,7 +37,6 @@ const collectionsState = createSlice({
 			state.loading = false;
 		});
 		builder.addCase(fetchCollections.rejected, (state) => {
-			// state.collections = null;
 			state.loading = false;
 		});
 		builder.addCase(fetchCollections.pending, (state) => {

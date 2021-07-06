@@ -74,3 +74,12 @@ export async function addFirestoreCollection(name, documents) {
 
 	return await batch.commit();
 }
+
+export function migrateCollectionsToFirestore(collectionsList) {
+	const filteredCollections = collectionsList.map((collection) => {
+		// take only properties you need
+		const { title, items, imageUrl } = collection;
+		return { title, items, imageUrl };
+	});
+	addFirestoreCollection('collections', filteredCollections);
+}

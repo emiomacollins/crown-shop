@@ -27,31 +27,10 @@ import {
 import { useDispatch, useSelector } from 'react-redux';
 import { setSignedIn, setUserData } from './REDUX/userState';
 import { useEffect } from 'react';
-import { getCollectionsList, setCollections } from './REDUX/collectionsState';
+import { getCollectionsAsList, setCollections } from './REDUX/collectionsState';
 
 function App() {
-	// OLD CODE WITH BUG
-	// BUG: RERENDERS APP ON AUTH STATE CHANGE
-	// CUS IT USES THE AUTHUSER AS A STATE
-	// BUG 2: ALSO RERENDERS THE APP ON USERDATA CHANGE
-	// FOR THE SAME REASON
-
-	// const [authUser] = useAuthState(auth);
-	// const userDocumentQuery = firestore.doc(`users/${authUser?.uid}`);
-	// const [userData] = useDocumentData(userDocumentQuery);
-
-	// useEffect(() => {
-	// 	if (!authUser) return;
-	// 	createUserDocument(authUser);
-	// }, [authUser]);
-
-	// useEffect(() => {
-	// 	dispatch(setUserData(userData));
-	// }, [userData]);
-
 	const dispatch = useDispatch();
-
-	// const collectionsList = useSelector(getCollectionsList);
 
 	useEffect(() => {
 		const unsuscribe = auth.onAuthStateChanged(async (authUser) => {
@@ -70,15 +49,6 @@ function App() {
 			// will be null if authUser is also null
 			dispatch(setUserData(userData));
 		});
-
-		// MIGRATE COLLECTIONS DATA TO FIRESTORE
-
-		// const filteredCollections = collectionsList.map((collection) => {
-		// 	// take only properties you need
-		// 	const { title, items, imageUrl } = collection;
-		// 	return { title, items, imageUrl };
-		// });
-		// addFirestoreCollection('collections', filteredCollections);
 
 		(async function () {
 			// FETCH COLLECTIONS DATA FROM FIRESTORE
@@ -113,5 +83,5 @@ function App() {
 
 export default App;
 
-// todo
+// TODO
 // optimize directory images & host them

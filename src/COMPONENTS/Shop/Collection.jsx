@@ -4,7 +4,6 @@ import { Link } from 'react-router-dom';
 
 function Collection({ collection, limit }) {
 	const dispatch = useDispatch();
-	if (!collection) return null;
 
 	let { title, items } = collection;
 

@@ -2,7 +2,7 @@ import { createSelector, createSlice } from '@reduxjs/toolkit';
 import SHOP_DATA from '../PAGES/Shoppage/data';
 
 const initialState = {
-	collections: {},
+	collections: null,
 };
 
 const collectionsState = createSlice({
@@ -31,5 +31,5 @@ export const getCollections = createSelector(
 );
 
 export const getCollectionsList = createSelector(getCollectionsState, ({ collections }) =>
-	Object.values(collections)
+	collections ? Object.values(collections) : []
 );

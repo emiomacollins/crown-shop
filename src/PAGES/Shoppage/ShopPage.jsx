@@ -4,9 +4,11 @@ import CollectionList from '../../COMPONENTS/Shop/CollectionList';
 import Collection from '../../COMPONENTS/Shop/Collection';
 import { useSelector } from 'react-redux';
 import { getCollections } from '../../REDUX/collectionsState';
+import Loader from '../../COMPONENTS/Loader';
 
 function ShopPage({ match }) {
 	const collections = useSelector(getCollections);
+	if (!collections) return <Loader />;
 
 	return (
 		<div className="collection-list container">

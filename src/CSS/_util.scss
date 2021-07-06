@@ -13,6 +13,28 @@
     padding: 5rem 0
 }
 
+.loader {
+    width: 100%;
+    height: calc(100vh - var(--nav-height));
+    display: grid;
+    place-content: center;
+}
+
+.spinner {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    border-top: 2px solid var(--color-dark);
+    border-right: 2px solid transparent;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
 .btn {
     display: inline-block;
     padding: .7em 2em;
@@ -23,6 +45,7 @@
     font-size: var(--size-400);
     transition: .3s;
     text-align: center;
+    outline: none;
 
     &:hover {
         background: transparent;
@@ -31,7 +54,7 @@
     }
 
     &:active {
-        transform: scale(.95);
+        transform: scale(.90);
     }
 
     &--secondary {
@@ -45,6 +68,27 @@
         background: none;
         letter-spacing: .1em;
         border: 0;
+    }
+
+    &--link {
+        position: relative;
+        display: inline-block;
+        width: auto;
+
+        &::after {
+            @include after;
+            left: 0;
+            top: 105%;
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: .2s;
+        }
+
+        &:hover {
+            &::after {
+                transform: scaleX(1);
+            }
+        }
     }
 }
 

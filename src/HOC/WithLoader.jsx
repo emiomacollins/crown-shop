@@ -25,7 +25,6 @@ function WithLoader(params) {
 	}
 	return Wrapper;
 }
-export default WithLoader;
 
 // create versions of the withLoading HOC
 export function WithCollectionsLoader(component) {

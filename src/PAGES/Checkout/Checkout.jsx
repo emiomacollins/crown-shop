@@ -23,9 +23,7 @@ function Checkout() {
 
 			<div ref={messageRef} className="message">
 				<div className="container">
-					<p className="bold heading">
-						please use the following test card information
-					</p>
+					<p className="bold heading">please use the following test details</p>
 					<p>
 						<span className="bold">card number:</span> 4242 4242 4242 4242
 					</p>

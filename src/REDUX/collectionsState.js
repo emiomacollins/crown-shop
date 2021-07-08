@@ -4,14 +4,19 @@ import { firestore } from '../FIREBASE/firebaseUtil';
 const initialState = {
 	collections: null,
 	loading: 'idle',
-	errorMessage: 'Failed to load collections, try again',
+	errorMessage: '',
 };
 
+// THUNK
 export const fetchCollections = createAsyncThunk(
 	'collections/fetchCollections',
 	async (thunkAPI) => {
 		const collectionsRef = firestore.collection('collections');
 		const snapShot = await collectionsRef.get();
+
+		// firebase does not throw an error if there is no internet connection
+		// when trying to fetch a collection, it returns an empty snapshot instead
+		if (snapShot.empty) throw new Error('Failed to load collections, try again');
 
 		const collections = {};
 		snapShot.docs.forEach((document) => {
@@ -23,6 +28,7 @@ export const fetchCollections = createAsyncThunk(
 	}
 );
 
+// SLICE
 const collectionsState = createSlice({
 	name: 'collections',
 	initialState,
@@ -32,15 +38,16 @@ const collectionsState = createSlice({
 		},
 	},
 	extraReducers: (builder) => {
+		builder.addCase(fetchCollections.pending, (state) => {
+			state.loading = true;
+		});
 		builder.addCase(fetchCollections.fulfilled, (state, { payload: collections }) => {
 			state.collections = collections;
 			state.loading = false;
 		});
-		builder.addCase(fetchCollections.rejected, (state) => {
+		builder.addCase(fetchCollections.rejected, (state, { error }) => {
 			state.loading = false;
-		});
-		builder.addCase(fetchCollections.pending, (state) => {
-			state.loading = true;
+			state.errorMessage = error.message;
 		});
 	},
 });

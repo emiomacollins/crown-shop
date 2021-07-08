@@ -8,26 +8,39 @@ import {
 	getCollectionsLoadingState,
 } from '../REDUX/collectionsState';
 
+// this HOC handles showing a spinner when data is being fetched,
+// fetching the data if it has not been fetched by any other component,
+// showing an error if the data failed to fetch,
+// & displaying the appropriate component if the data exists or if fetched successfully
+
 function WithLoader(params) {
 	// get selectors and action creators to implement loading logic
 	const { getLoading, getErrorMessage, fetchAction, getData, Component } = params;
 
 	// create a wrapper component that implements the logic
-	// and renders a component, thereby merging it's logic with it
+	// and renders the component you pass to it, thereby merging it's logic with it
 	function Wrapper() {
 		const dispatch = useDispatch();
+
 		const loading = useSelector(getLoading);
 		const errorMessage = useSelector(getErrorMessage);
 		const data = useSelector(getData);
+
 		if (loading === true) return <Loader />;
-		if (loading === false && !data) return <p>{errorMessage}</p>;
-		if (loading === 'idle') dispatch(fetchAction());
+		if (loading === false && !data)
+			return <p className="container">{errorMessage}</p>;
+		if (loading === 'idle') {
+			dispatch(fetchAction());
+			return null;
+		}
+
 		return <Component />;
 	}
 	return Wrapper;
 }
 
-// create versions of the withLoading HOC
+// this version gives a component a loader functionality
+// based on the collections slice
 export function WithCollectionsLoader(component) {
 	return WithLoader({
 		Component: component,

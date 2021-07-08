@@ -1,29 +1,29 @@
+import { useFormik } from 'formik';
 import React, { useState } from 'react';
 import { withRouter } from 'react-router-dom';
 import { signInWithGoogle, auth } from '../../FIREBASE/firebaseUtil';
 
-function SignIn({ history }) {
-	let [formData, setFormData] = useState({
-		email: '',
-		password: '',
+function SignIn() {
+	const formik = useFormik({
+		initialValues: {
+			email: '',
+			password: '',
+		},
+		onSubmit: async (values) => {
+			const { email, password } = values;
+			try {
+				setErrorMessage('');
+				setMessage('signing in...');
+				await auth.signInWithEmailAndPassword(email, password);
+			} catch (error) {
+				setMessage('');
+				setErrorMessage(error.message);
+			}
+		},
 	});
 
 	const [message, setMessage] = useState('');
-	const [messageIsError, setMessageIsError] = useState(true);
-
-	async function handleSubmit(e) {
-		e.preventDefault();
-		const { email, password } = formData;
-		try {
-			setMessageIsError(false);
-			setMessage('signing in...');
-			await auth.signInWithEmailAndPassword(email, password);
-			resetForm();
-		} catch (error) {
-			setMessageIsError(true);
-			setMessage(error.message);
-		}
-	}
+	const [errorMessage, setErrorMessage] = useState('');
 
 	async function handlesignInWithGoogle() {
 		try {
@@ -34,18 +34,8 @@ function SignIn({ history }) {
 		}
 	}
 
-	function resetForm() {
-		setFormData({
-			email: '',
-			password: '',
-		});
-		setMessage('');
-	}
-
-	function handleInputChange(e) {
-		let { name, value } = e.target;
-		setFormData({ ...formData, ...{ [name]: value } });
-	}
+	const { handleChange, handleSubmit, values } = formik;
+	const { email, password } = values;
 
 	return (
 		<section className="signin">
@@ -56,10 +46,10 @@ function SignIn({ history }) {
 					<label className="form__label">email</label>
 					<input
 						className="form__input"
-						onChange={handleInputChange}
+						onChange={handleChange}
 						type="email"
 						name="email"
-						value={formData.email}
+						value={email}
 					/>
 				</div>
 
@@ -67,16 +57,15 @@ function SignIn({ history }) {
 					<label className="form__label">password</label>
 					<input
 						className="form__input"
-						onChange={handleInputChange}
+						onChange={handleChange}
 						type="password"
 						name="password"
-						value={formData.password}
+						value={password}
 					/>
 				</div>
 
-				<p className={`message ${messageIsError && 'message--error'}`}>
-					{message}
-				</p>
+				<p className={`message`}>{message}</p>
+				<p className={`message message--error`}>{errorMessage}</p>
 
 				<div className="columns">
 					<input className="btn" type="submit" value="SIGN IN" />

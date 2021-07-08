@@ -23,7 +23,7 @@
     .signin {
         max-width: 700px;
         display: grid;
-        justify-items: center;
+        // justify-items: center;
 
         @include desktop {
             max-width: none;
@@ -33,7 +33,7 @@
     .signup {
         max-width: 700px;
         display: grid;
-        justify-items: center;
+        // justify-items: center;
 
         @include desktop {
             max-width: none;
@@ -54,7 +54,13 @@
         top: -1.5rem;
 
         &--error {
-            color: rgb(255, 131, 109);
+            color: var(--color-error);
+        }
+    }
+
+    &__btn {
+        &:disabled {
+            opacity: .6;
         }
     }
 
@@ -75,7 +81,7 @@
 
     &__label {
         position: absolute;
-        bottom: 3rem;
+        top: -1.5rem;
         left: 0;
         font-size: var(--size-400);
         opacity: .5;

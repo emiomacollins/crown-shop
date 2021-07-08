@@ -1,133 +1,96 @@
+import { Form, Formik } from 'formik';
 import React, { useState } from 'react';
 import { withRouter } from 'react-router-dom';
+import * as yup from 'yup';
 import { auth, createUserDocument } from '../../FIREBASE/firebaseUtil';
+import { Textbox, FormEl } from '../Reusables/FormElements';
 
-function Signup({ history }) {
-	let [formData, setFormData] = useState({
-		displayName: '',
-		email: '',
-		password: '',
-		confirmPassword: '',
-	});
-
-	const [message, setMessage] = useState('');
-	const [messageIsError, setMessageIsError] = useState(true);
-	const [formDisabled, setFormDisabled] = useState(false);
-
-	async function handleSubmit(e) {
-		e.preventDefault();
-		setFormDisabled(true);
-		const { email, password, confirmPassword, displayName } = formData;
-
-		if (!(email && password && confirmPassword && displayName)) {
-			setMessage('fields cannot be empty');
-			return;
-		}
-
-		if (password !== confirmPassword) {
-			setMessage('passwords must match');
-			return;
-		}
-
-		try {
-			setMessageIsError(false);
-			setMessage('creating...');
-			// it signs in automatically and also changes the auth state
-			// to trigger the useEffect to listen for snapShots
-			// & try to create a user Document but returns because there is
-			// no displayName in auth and no additionalData
-			const { user } = await auth.createUserWithEmailAndPassword(email, password);
-			// we trigger a snapShot event by creating the userDocument here
-			// & this time adding additionalData to prevent it from returning
-			await createUserDocument(user, { displayName });
-			resetForm();
-		} catch (error) {
-			console.log(error);
-			setMessage(error.message);
-		}
-	}
-
-	function resetForm() {
-		setFormData({
-			displayName: '',
-			email: '',
-			password: '',
-			confirmPassword: '',
-		});
-
-		setMessage('');
-		setMessageIsError(true);
-		setFormDisabled(true);
-	}
-
-	function handleInputChange(e) {
-		let { name, value } = e.target;
-		setFormData({ ...formData, ...{ [name]: value } });
-	}
+function Signup() {
+	const [errorMessage, setErrorMessage] = useState('');
 
 	return (
-		<section className="signup">
-			<h1 className="authentication__title">I Dont have an account</h1>
+		<Formik
+			initialValues={{
+				displayName: '',
+				email: '',
+				password: '',
+				confirmPassword: '',
+			}}
+			validationSchema={yup.object({
+				displayName: yup.string().required('field cannot be empty'),
+				email: yup
+					.string()
+					.email('Invalid email')
+					.required('field cannot be empty'),
+				password: yup
+					.string()
+					.min(6, 'At least 6 characters')
+					.max(20)
+					.required('field cannot be empty'),
+				confirmPassword: yup
+					.string()
+					.required('field cannot be empty')
+					.oneOf([yup.ref('password'), null], 'Passwords must match'),
+			})}
+			onSubmit={async (values, { setSubmitting }) => {
+				const { displayName, email, password } = values;
 
-			<form autoComplete="off" className="form" onSubmit={handleSubmit}>
-				<div className="form__control">
-					<label className="form__label">Name</label>
-					<input
-						className="form__input"
-						onChange={handleInputChange}
-						type="text"
-						name="displayName"
-						value={formData.displayName}
-					/>
-				</div>
+				try {
+					setSubmitting(true);
+					setErrorMessage('');
+					// it signs in automatically
+					// & triggers the onAuthStateChanged then trys to
+					// create a user Document but returns because there is
+					// no displayName in auth and no additionalData
+					const { user } = await auth.createUserWithEmailAndPassword(
+						email,
+						password
+					);
 
-				<div className="form__control">
-					<label className="form__label">email</label>
-					<input
-						className="form__input"
-						onChange={handleInputChange}
-						type="email"
-						name="email"
-						value={formData.email}
-					/>
-				</div>
+					// we now create the correct userDocument here
+					// by adding additionalData to set the displayName
+					// & prevent the createUserDocument function from returning
+					await createUserDocument(user, { displayName });
+				} catch (error) {
+					console.log(error);
+					setSubmitting(false);
+					setErrorMessage(error.message);
+				}
+			}}
+		>
+			{(formik) => {
+				const { isSubmitting, isValid } = formik;
 
-				<div className="form__control">
-					<label className="form__label">password</label>
-					<input
-						className="form__input"
-						onChange={handleInputChange}
-						type="password"
-						name="password"
-						value={formData.password}
-					/>
-				</div>
+				return (
+					<section className="signup">
+						<h1 className="authentication__title">I Dont have an account</h1>
+						<Form className="form" autoComplete="off">
+							<Textbox label="Name" name="displayName" />
+							<Textbox label="Email" name="email" />
+							<Textbox label="Password" name="password" type="password" />
+							<Textbox
+								label="Confirm Password"
+								name="confirmPassword"
+								type="password"
+							/>
 
-				<div className="form__control">
-					<label className="form__label">Confirm password</label>
-					<input
-						className="form__input"
-						onChange={handleInputChange}
-						type="password"
-						name="confirmPassword"
-						value={formData.confirmPassword}
-					/>
-				</div>
+							<p className={`message message--error`}>
+								{errorMessage || <br />}
+							</p>
 
-				<p className={`message ${messageIsError && 'message--error'}`}>
-					{message || <br />}
-				</p>
-
-				<div className="columns">
-					<input
-						disabled={formDisabled}
-						className="btn form__btn"
-						type="submit"
-						value="SIGN UP"
-					/>
-				</div>
-			</form>
-		</section>
+							<div className="columns">
+								<input
+									className="btn form__btn"
+									type="submit"
+									value="SIGN UP"
+									disabled={!isValid || isSubmitting}
+								/>
+							</div>
+						</Form>
+					</section>
+				);
+			}}
+		</Formik>
 	);
 }
 

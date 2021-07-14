@@ -32,12 +32,10 @@ function App() {
 			authUser?.providerData?.providerId === 'google.com' &&
 				(await createUserDocument(authUser));
 
-			// fetch the document
 			const userRef = firestore.doc(`users/${authUser?.uid}`);
 			const snapShot = await userRef.get();
-			const userData = snapShot.exists ? snapShot.data() : null;
 
-			// store the document on redux
+			const userData = snapShot.exists ? snapShot.data() : null;
 			dispatch(setUserData(userData));
 		});
 		return unsuscribe;

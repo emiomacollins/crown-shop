@@ -16,7 +16,7 @@ function Collection({ collection, limit }) {
 					<img src={imageUrl} alt="" className="collection__item__image" />
 					<button
 						onClick={() => dispatch(addCartItem(item))}
-						className="btn add-to-cart-btn"
+						className="add-to-cart-btn"
 					>
 						<i className="fas fa-plus"></i>
 					</button>

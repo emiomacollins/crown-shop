@@ -43,6 +43,17 @@
             width: 4.5rem;
             height: 4.5rem;
             box-shadow: var(--shadow);
+            border: 0;
+            font-size: var(--size-400);
+            transition: .2s;
+
+            &:hover {
+                transform: scale(1.1);
+            }
+
+            &:active {
+                transform: scale(1);
+            }
         }
 
     }

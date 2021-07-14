@@ -1,6 +1,6 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import Loader from '../COMPONENTS/Loader';
+import Loader from '../COMPONENTS/Reusables/Loader';
 import {
 	fetchCollections,
 	getCollections,

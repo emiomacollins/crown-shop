@@ -18,7 +18,7 @@ import { auth, createUserDocument, firestore } from './FIREBASE/firebaseUtil';
 
 // REDUX
 import { useDispatch } from 'react-redux';
-import { setSignedIn, setUserData } from './REDUX/userState';
+import { setUser, setUserData } from './REDUX/userState';
 import { useEffect } from 'react';
 
 function App() {
@@ -26,11 +26,9 @@ function App() {
 
 	useEffect(() => {
 		const unsuscribe = auth.onAuthStateChanged(async (authUser) => {
-			const signedIn = authUser ? true : false;
-			dispatch(setSignedIn(signedIn));
+			dispatch(setUser(authUser));
 
-			// create a document automatically if the provider is google
-			// (does not create if user exists)
+			// create user document (only new users)
 			authUser?.providerData?.providerId === 'google.com' &&
 				(await createUserDocument(authUser));
 

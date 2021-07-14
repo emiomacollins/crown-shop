@@ -2,7 +2,7 @@ import { createSelector, createSlice } from '@reduxjs/toolkit';
 
 // SLICE DEFINITION
 const initialState = {
-	signedIn: false,
+	user: false,
 	userData: null,
 };
 
@@ -10,8 +10,8 @@ const userSlice = createSlice({
 	name: 'user',
 	initialState,
 	reducers: {
-		setSignedIn(state, { payload: signedIn }) {
-			state.signedIn = signedIn;
+		setUser(state, { payload: user }) {
+			state.user = user;
 		},
 		setUserData(state, { payload: data }) {
 			state.userData = data;
@@ -24,11 +24,10 @@ const userReducer = userSlice.reducer;
 export default userReducer;
 
 // ACTIONS
-export const { setSignedIn, setUserData } = userSlice.actions;
+export const { setUser, setUserData } = userSlice.actions;
 
 // SELECTORS
 const getUserState = (store) => store.user;
 
-export const getSignedIn = createSelector(getUserState, ({ signedIn }) => signedIn);
-
+export const getUser = createSelector(getUserState, ({ user }) => user);
 export const getUserData = createSelector(getUserState, ({ userData }) => userData);

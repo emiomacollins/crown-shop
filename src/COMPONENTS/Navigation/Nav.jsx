@@ -6,10 +6,10 @@ import Cart from './Cart';
 import ThemeToggle from './ThemeToggle';
 import Logo from './Logo';
 import { useSelector } from 'react-redux';
-import { getSignedIn } from '../../REDUX/userState';
+import { getUser } from '../../REDUX/userState';
 
 export default function Nav() {
-	const signedIn = useSelector(getSignedIn);
+	const user = useSelector(getUser);
 	const [isExpanded, setIsExpanded] = useState(false);
 
 	function toggleExpanded() {
@@ -35,7 +35,7 @@ export default function Nav() {
 						CONTACT
 					</Link>
 
-					{signedIn ? (
+					{user ? (
 						<Link to="/signin" onClick={handleSignOut} className="nav__link">
 							SIGN OUT
 						</Link>

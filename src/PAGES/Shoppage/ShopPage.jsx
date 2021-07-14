@@ -4,7 +4,7 @@ import CollectionList from '../../COMPONENTS/Shop/CollectionList';
 import Collection from '../../COMPONENTS/Shop/Collection';
 import { useSelector } from 'react-redux';
 import { getCollections } from '../../REDUX/collectionsState';
-import { WithCollectionsLoader } from '../../HOC/WithLoader';
+import { WithCollectionsLoader } from '../../HOC/withLoader';
 
 function ShopPage({ match }) {
 	const collections = useSelector(getCollections);

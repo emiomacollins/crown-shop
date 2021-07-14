@@ -1,9 +1,8 @@
-import { Form, useField } from 'formik';
+import { useField } from 'formik';
 import React from 'react';
 import styled, { css } from 'styled-components';
 
 const TextboxEl = styled.input`
-	padding: 1rem;
 	transition: 0.3s;
 
 	${({ isInvalid }) =>

@@ -1,6 +1,6 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-import { WithCollectionsLoader } from '../../HOC/WithLoader';
+import { WithCollectionsLoader } from '../../HOC/withLoader';
 import { getCollectionsAsList } from '../../REDUX/collectionsState';
 import CollectionDirectoryItem from './CollectionDirectoryItem';
 

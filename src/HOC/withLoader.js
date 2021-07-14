@@ -19,7 +19,7 @@ function WithLoader(params) {
 
 	// create a wrapper component that implements the logic
 	// and renders the component you pass to it, thereby merging it's logic with it
-	function Wrapper() {
+	function Wrapper(props) {
 		const dispatch = useDispatch();
 
 		const loading = useSelector(getLoading);
@@ -27,23 +27,23 @@ function WithLoader(params) {
 		const data = useSelector(getData);
 
 		if (loading === true) return <Loader />;
+
 		if (loading === false && !data)
 			return <p className="container">{errorMessage}</p>;
+
 		if (loading === 'idle') {
 			dispatch(fetchAction());
 			return null;
 		}
 
-		return <Component />;
+		return <Component {...props} />;
 	}
 	return Wrapper;
 }
 
-// this version gives a component a loader functionality
-// based on the collections slice
-export function WithCollectionsLoader(component) {
+export function WithCollectionsLoader(Component) {
 	return WithLoader({
-		Component: component,
+		Component,
 		getLoading: getCollectionsLoadingState,
 		getErrorMessage: getCollectionsErrorMessage,
 		getData: getCollections,

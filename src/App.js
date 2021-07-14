@@ -31,10 +31,12 @@ function App() {
 			const signedIn = authUser ? true : false;
 			dispatch(setSignedIn(signedIn));
 
-			// create a document for new users that signup
+			// create a document (does not create if user exists)
+			// (existing users have documents already)
 			signedIn && (await createUserDocument(authUser));
+			console.log(authUser);
 
-			// fetch the document (even for existing users)
+			// fetch the document
 			const userRef = firestore.doc(`users/${authUser?.uid}`);
 			const snapShot = await userRef.get();
 			const userData = snapShot.exists ? snapShot.data() : null;

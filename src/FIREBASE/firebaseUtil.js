@@ -15,11 +15,7 @@ let config = {
 
 export const auth = firebase.auth();
 export const firestore = firebase.firestore();
-
-export function signInWithGoogle() {
-	const provider = new firebase.auth.GoogleAuthProvider();
-	return auth.signInWithPopup(provider);
-}
+export const googleProvider = new firebase.auth.GoogleAuthProvider();
 
 export async function createUserDocument(user, additionalData) {
 	const userRef = firestore.doc(`users/${user.uid}`);
@@ -28,12 +24,15 @@ export async function createUserDocument(user, additionalData) {
 	if (snapShot.exists) return;
 	const { displayName, email } = user;
 
-	userRef.set({
+	const data = {
 		displayName,
 		email,
 		createdAt: new Date().getTime(),
 		...additionalData,
-	});
+	};
+	userRef.set(data);
+
+	return data;
 }
 
 export async function addFirestoreCollection(name, list) {

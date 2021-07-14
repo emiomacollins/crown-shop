@@ -40,6 +40,10 @@ const cartSlice = createSlice({
 		toggleCartExpanded(state) {
 			state.expanded = !state.expanded;
 		},
+
+		clearCartItems(state) {
+			state.cartItems = [];
+		},
 	},
 });
 
@@ -53,6 +57,7 @@ export const {
 	removeCartItem,
 	DecreaseCartItemQuantity,
 	toggleCartExpanded,
+	clearCartItems,
 } = cartSlice.actions;
 
 // SELECTORS

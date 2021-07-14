@@ -12,33 +12,19 @@ import Homepage from './PAGES/Homepage/Homepage';
 import ShopPage from './PAGES/Shoppage/ShopPage';
 import AuthenticationPage from './PAGES/Authpage/AuthenticationPage';
 import Checkout from './PAGES/Checkout/Checkout';
-
-// FIREBASE
-import { auth, createUserDocument, firestore } from './FIREBASE/firebaseUtil';
-
-// REDUX
-import { useDispatch } from 'react-redux';
-import { setUser, setUserData } from './REDUX/userState';
 import { useEffect } from 'react';
+import { auth } from './FIREBASE/firebaseUtil';
+import { useDispatch } from 'react-redux';
+import { initializeUser } from './REDUX/userThunks';
 
 function App() {
 	const dispatch = useDispatch();
-
 	useEffect(() => {
-		const unsuscribe = auth.onAuthStateChanged(async (authUser) => {
-			dispatch(setUser(authUser));
-
-			// create user document (only new users)
-			authUser?.providerData?.providerId === 'google.com' &&
-				(await createUserDocument(authUser));
-
-			const userRef = firestore.doc(`users/${authUser?.uid}`);
-			const snapShot = await userRef.get();
-
-			const userData = snapShot.exists ? snapShot.data() : null;
-			dispatch(setUserData(userData));
+		// firebsae initializes the authUser
+		// so reflect it in your store when the app mounts
+		return auth.onAuthStateChanged((authUser) => {
+			authUser && dispatch(initializeUser(authUser));
 		});
-		return unsuscribe;
 	}, []);
 
 	return (

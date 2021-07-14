@@ -1,16 +1,17 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { auth } from '../../FIREBASE/firebaseUtil';
 
 import Cart from './Cart';
 import ThemeToggle from './ThemeToggle';
 import Logo from './Logo';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { getUser } from '../../REDUX/userState';
+import { signOut } from '../../REDUX/userThunks';
 
 export default function Nav() {
 	const user = useSelector(getUser);
 	const [isExpanded, setIsExpanded] = useState(false);
+	const dispatch = useDispatch();
 
 	function toggleExpanded() {
 		setIsExpanded(!isExpanded);
@@ -18,7 +19,7 @@ export default function Nav() {
 
 	function handleSignOut() {
 		toggleExpanded();
-		auth.signOut();
+		dispatch(signOut());
 	}
 
 	return (

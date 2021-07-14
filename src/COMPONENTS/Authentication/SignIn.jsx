@@ -1,7 +1,8 @@
 import { useFormik } from 'formik';
 import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { withRouter } from 'react-router-dom';
-import { signInWithGoogle, auth } from '../../FIREBASE/firebaseUtil';
+import { signIn, signInWithGoogle } from '../../REDUX/userThunks';
 
 function SignIn() {
 	const formik = useFormik({
@@ -11,27 +12,17 @@ function SignIn() {
 		},
 		onSubmit: async (values) => {
 			const { email, password } = values;
-			try {
-				setErrorMessage('');
-				setMessage('signing in...');
-				await auth.signInWithEmailAndPassword(email, password);
-			} catch (error) {
-				setMessage('');
-				setErrorMessage(error.message);
-			}
+			// implement setMessage(signing in...)
+			dispatch(signIn({ email, password }));
 		},
 	});
 
 	const [message, setMessage] = useState('');
 	const [errorMessage, setErrorMessage] = useState('');
+	const dispatch = useDispatch();
 
 	async function handlesignInWithGoogle() {
-		try {
-			setMessage('');
-			await signInWithGoogle();
-		} catch (error) {
-			setMessage("couldn't sign in. try again");
-		}
+		dispatch(signInWithGoogle());
 	}
 
 	const { handleChange, handleSubmit, values } = formik;
@@ -41,7 +32,7 @@ function SignIn() {
 		<section className="signin">
 			<h1 className="authentication__title">I already have an account</h1>
 
-			<form autoComplete="off" className="form" onSubmit={handleSubmit}>
+			<form className="form" onSubmit={handleSubmit}>
 				<div className="form__control">
 					<label className="form__label">email</label>
 					<input

@@ -1,11 +1,13 @@
 import { Form, Formik } from 'formik';
 import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import * as yup from 'yup';
-import { auth, createUserDocument } from '../../FIREBASE/firebaseUtil';
+import { signUp } from '../../REDUX/userThunks';
 import { Textbox } from '../Reusables/FormElements';
 
 function Signup() {
+	const dispatch = useDispatch();
 	const [errorMessage, setErrorMessage] = useState('');
 
 	return (
@@ -34,31 +36,19 @@ function Signup() {
 			})}
 			onSubmit={async (values, { setSubmitting }) => {
 				const { displayName, email, password } = values;
-
-				try {
-					setSubmitting(true);
-					setErrorMessage('');
-
-					const { user } = await auth.createUserWithEmailAndPassword(
-						email,
-						password
-					);
-
-					createUserDocument(user, { displayName });
-				} catch (error) {
-					console.log(error);
-					setSubmitting(false);
-					setErrorMessage(error.message);
-				}
+				setSubmitting(true);
+				setErrorMessage('');
+				dispatch(signUp({ displayName, email, password }));
 			}}
 		>
 			{(formik) => {
-				const { isSubmitting, isValid } = formik;
+				const { isSubmitting } = formik;
 
 				return (
 					<section className="signup">
 						<h1 className="authentication__title">I Dont have an account</h1>
-						<Form className="form" autoComplete="off">
+
+						<Form className="form">
 							<Textbox label="Name" name="displayName" />
 							<Textbox label="Email" name="email" />
 							<Textbox label="Password" name="password" type="password" />
@@ -72,14 +62,12 @@ function Signup() {
 								{errorMessage || <br />}
 							</p>
 
-							<div className="columns">
-								<input
-									className="btn form__btn"
-									type="submit"
-									value="SIGN UP"
-									disabled={!isValid || isSubmitting}
-								/>
-							</div>
+							<input
+								className="btn form__btn"
+								type="submit"
+								value="SIGN UP"
+								disabled={isSubmitting}
+							/>
 						</Form>
 					</section>
 				);

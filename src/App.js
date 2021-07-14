@@ -29,9 +29,10 @@ function App() {
 			const signedIn = authUser ? true : false;
 			dispatch(setSignedIn(signedIn));
 
-			// create a document (does not create if user exists)
-			// (existing users have documents already)
-			signedIn && (await createUserDocument(authUser));
+			// create a document automatically if the provider is google
+			// (does not create if user exists)
+			authUser?.providerData?.providerId === 'google.com' &&
+				(await createUserDocument(authUser));
 
 			// fetch the document
 			const userRef = firestore.doc(`users/${authUser?.uid}`);

@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { withRouter } from 'react-router-dom';
 import * as yup from 'yup';
 import { auth, createUserDocument } from '../../FIREBASE/firebaseUtil';
-import { Textbox, FormEl } from '../Reusables/FormElements';
+import { Textbox } from '../Reusables/FormElements';
 
 function Signup() {
 	const [errorMessage, setErrorMessage] = useState('');
@@ -38,19 +38,13 @@ function Signup() {
 				try {
 					setSubmitting(true);
 					setErrorMessage('');
-					// it signs in automatically
-					// & triggers the onAuthStateChanged then trys to
-					// create a user Document but returns because there is
-					// no displayName in auth and no additionalData
+
 					const { user } = await auth.createUserWithEmailAndPassword(
 						email,
 						password
 					);
 
-					// we now create the correct userDocument here
-					// by adding additionalData to set the displayName
-					// & prevent the createUserDocument function from returning
-					await createUserDocument(user, { displayName });
+					createUserDocument(user, { displayName });
 				} catch (error) {
 					console.log(error);
 					setSubmitting(false);

@@ -4,18 +4,19 @@ import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import {
 	getCartExpanded,
-	getCartItems,
 	getCartItemsCount,
 	toggleCartExpanded,
 } from '../../REDUX/cartState';
 import { useRef } from 'react';
 import { CartIcon } from '../../ASSETS/customSvgs';
+import styled from 'styled-components';
+import CartItemsList from './CartItemsList';
 
 function Cart() {
 	const dispatch = useDispatch();
 	const expanded = useSelector(getCartExpanded);
-	const cartItems = useSelector(getCartItems);
 	const cartItemsCount = useSelector(getCartItemsCount);
+	const cartIconRef = useRef(null);
 
 	useEffect(() => {
 		cartIconRef.current.style.transform = 'scale(1.2)';
@@ -28,45 +29,63 @@ function Cart() {
 		dispatch(toggleCartExpanded());
 	}
 
-	const cartItemList = cartItems.map((item) => {
-		const { id, imageUrl, name, price, quantity } = item;
-
-		return (
-			<div key={id} className="cart__item">
-				<img src={imageUrl} alt="" className="cart__item__image" />
-				<div className="cart__item__detail">
-					<p>{name}</p>
-					<p>
-						{quantity} x ${price}
-					</p>
-				</div>
-			</div>
-		);
-	});
-
-	const cartIconRef = useRef(null);
-
 	return (
-		<div className="cart">
-			<span className="cart__count">{cartItemsCount}</span>
-			<CartIcon ref={cartIconRef} onClick={handleToggleExpanded} />
-
-			{expanded ? (
-				<div className="cart__dropdown">
-					<div className="cart__items">
-						{cartItems.length ? (
-							cartItemList
-						) : (
-							<p className="cart__message">Your cart is Empty</p>
-						)}
-					</div>
+		<Container>
+			<Count>{cartItemsCount}</Count>
+			<Icon ref={cartIconRef} onClick={handleToggleExpanded} />
+			{expanded && (
+				<Dropdown>
+					<CartItemsList />
 					<Link onClick={handleToggleExpanded} to="/checkout" className="btn">
 						CHECKOUT
 					</Link>
-				</div>
-			) : null}
-		</div>
+				</Dropdown>
+			)}
+		</Container>
 	);
 }
 
 export default Cart;
+
+// STYLES
+const Container = styled.div`
+	position: relative;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+`;
+
+const Icon = styled(CartIcon)`
+	width: 3rem;
+	height: 3rem;
+	cursor: pointer;
+`;
+
+const Count = styled.span`
+	position: absolute;
+	font-weight: bold;
+	top: 50%;
+	transform: translateY(-30%);
+	pointer-events: none;
+`;
+
+const Dropdown = styled.div`
+	position: absolute;
+	width: 26rem;
+	height: 35rem;
+	display: flex;
+	flex-direction: column;
+	padding: 2rem;
+	background-color: var(--color-light);
+	top: 180%;
+	right: -5rem;
+	box-shadow: var(--shadow2);
+
+	::-webkit-scrollbar {
+		width: 6px;
+	}
+
+	::-webkit-scrollbar-thumb {
+		border-radius: 5rem;
+	}
+`;

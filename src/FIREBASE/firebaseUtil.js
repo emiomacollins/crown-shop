@@ -22,51 +22,27 @@ export function signInWithGoogle() {
 }
 
 export async function createUserDocument(user, additionalData) {
-	// creates a document of the user in firestore if it does not exist (i.e is a new user)
-
-	// get a document reference
 	const userRef = firestore.doc(`users/${user.uid}`);
-
-	// check if that reference exists / contains data
 	const snapShot = await userRef.get();
 
-	// if data already exists in that reference stop
 	if (snapShot.exists) return;
-
-	// if not then create a user with that reference
 	const { displayName, email } = user;
 
-	// if authObj does not have a displayName (not signed in with google)
-	// & no additional data was passed then dont create an in-complete
-	// document just return
-	if (!displayName && !additionalData) return;
-
-	// else
-	try {
-		userRef.set({
-			displayName,
-			email,
-			// createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-			createdAt: new Date().getTime(),
-			// FOR SETTING DISPLAY NAME ON EMAIL / PASSWORD SIGN UP
-			...additionalData,
-		});
-	} catch (error) {
-		console.log(error.message);
-	}
-
-	// .set creates the document if it doesnt exist
-	// to add to document fields we use .set()
-	// to add to a collection we use .add()
+	userRef.set({
+		displayName,
+		email,
+		createdAt: new Date().getTime(),
+		...additionalData,
+	});
 }
 
-export async function addFirestoreCollection(name, documents) {
+export async function addFirestoreCollection(name, list) {
 	const collectionRef = firestore.collection(name);
 	const batch = firestore.batch();
 
 	// create a document for each collection
-	documents.forEach((document) => {
-		// to auto generate
+	list.forEach((document) => {
+		// create new document
 		const newDocumentRef = collectionRef.doc();
 		// add to batch
 		batch.set(newDocumentRef, document);

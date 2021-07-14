@@ -15,8 +15,6 @@ import Checkout from './PAGES/Checkout/Checkout';
 
 // FIREBASE
 import { auth, createUserDocument, firestore } from './FIREBASE/firebaseUtil';
-// import { useAuthState } from 'react-firebase-hooks/auth';
-// import { useCollectionData, useDocumentData } from 'react-firebase-hooks/firestore';
 
 // REDUX
 import { useDispatch } from 'react-redux';
@@ -34,7 +32,6 @@ function App() {
 			// create a document (does not create if user exists)
 			// (existing users have documents already)
 			signedIn && (await createUserDocument(authUser));
-			console.log(authUser);
 
 			// fetch the document
 			const userRef = firestore.doc(`users/${authUser?.uid}`);
@@ -42,7 +39,6 @@ function App() {
 			const userData = snapShot.exists ? snapShot.data() : null;
 
 			// store the document on redux
-			// will be null if authUser is also null
 			dispatch(setUserData(userData));
 		});
 		return unsuscribe;

@@ -1,21 +1,25 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
-import { addItem, DecreaseQuantity, removeItem } from '../../REDUX/cartState';
+import {
+	addCartItem,
+	DecreaseCartItemQuantity,
+	removeCartItem,
+} from '../../REDUX/cartState';
 
 function CheckoutItem({ item }) {
 	const { imageUrl, name, quantity, price } = item;
 	const dispatch = useDispatch();
 
 	function handleIncreaseQuantity() {
-		dispatch(addItem(item));
+		dispatch(addCartItem(item));
 	}
 
 	function handleDecreaseQuantity() {
-		dispatch(DecreaseQuantity(item));
+		dispatch(DecreaseCartItemQuantity(item));
 	}
 
 	function handleRemoveItem() {
-		dispatch(removeItem(item));
+		dispatch(removeCartItem(item));
 	}
 
 	return (

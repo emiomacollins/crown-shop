@@ -47,6 +47,10 @@
     text-align: center;
     outline: none;
 
+    &:disabled {
+        opacity: .7;
+    }
+
     &:hover {
         background: transparent;
         color: var(--color-dark);

@@ -12,7 +12,7 @@ const cartSlice = createSlice({
 	name: 'cart',
 	initialState,
 	reducers: {
-		addItem(state, { payload }) {
+		addCartItem(state, { payload }) {
 			// check if item exists in cart
 			const index = findItemIndex(state.cartItems, payload);
 
@@ -25,11 +25,11 @@ const cartSlice = createSlice({
 			state.cartItems.push({ ...payload, quantity: 1 });
 		},
 
-		removeItem(state, { payload }) {
+		removeCartItem(state, { payload }) {
 			state.cartItems = state.cartItems.filter((item) => item.id !== payload.id);
 		},
 
-		DecreaseQuantity(state, { payload }) {
+		DecreaseCartItemQuantity(state, { payload }) {
 			const index = findItemIndex(state.cartItems, payload);
 			if (index >= 0) {
 				state.cartItems[index].quantity =
@@ -37,7 +37,7 @@ const cartSlice = createSlice({
 			}
 		},
 
-		toggleExpanded(state) {
+		toggleCartExpanded(state) {
 			state.expanded = !state.expanded;
 		},
 	},
@@ -48,8 +48,12 @@ const cartReducer = cartSlice.reducer;
 export default cartReducer;
 
 // ACTION CREATORS
-export const { addItem, removeItem, DecreaseQuantity, toggleExpanded } =
-	cartSlice.actions;
+export const {
+	addCartItem,
+	removeCartItem,
+	DecreaseCartItemQuantity,
+	toggleCartExpanded,
+} = cartSlice.actions;
 
 // SELECTORS
 const getCartState = (store) => store.cart;

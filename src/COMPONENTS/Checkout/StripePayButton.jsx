@@ -1,8 +1,12 @@
 import React from 'react';
+import { useSelector } from 'react-redux';
 import StripeCheckout from 'react-stripe-checkout';
 import LogoPath from '../../ASSETS/Logo.svg';
+import { getCartItemsCount } from '../../REDUX/cartState';
 
 function StripePayButton({ price }) {
+	const cartItemsCount = useSelector(getCartItemsCount);
+
 	function handleToken(token) {
 		// console.log(token);
 	}
@@ -20,7 +24,9 @@ function StripePayButton({ price }) {
 			image={LogoPath}
 			token={handleToken}
 		>
-			<button className="btn">PAY NOW</button>
+			<button disabled={!cartItemsCount} className="btn">
+				PAY NOW
+			</button>
 		</StripeCheckout>
 	);
 }

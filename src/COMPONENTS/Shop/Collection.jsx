@@ -1,5 +1,5 @@
 import { useDispatch } from 'react-redux';
-import { addItem } from '../../REDUX/cartState';
+import { addCartItem } from '../../REDUX/cartState';
 import { Link } from 'react-router-dom';
 
 function Collection({ collection, limit }) {
@@ -15,7 +15,7 @@ function Collection({ collection, limit }) {
 				<header>
 					<img src={imageUrl} alt="" className="collection__item__image" />
 					<button
-						onClick={() => dispatch(addItem(item))}
+						onClick={() => dispatch(addCartItem(item))}
 						className="btn add-to-cart-btn"
 					>
 						<i className="fas fa-plus"></i>

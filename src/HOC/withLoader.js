@@ -41,7 +41,7 @@ function WithLoader(params) {
 	return Wrapper;
 }
 
-export function WithCollectionsLoader(Component) {
+export function WithCollections(Component) {
 	return WithLoader({
 		Component,
 		getLoading: getCollectionsLoadingState,

@@ -15,7 +15,7 @@ import Checkout from './PAGES/Checkout/Checkout';
 import { useEffect } from 'react';
 import { auth } from './FIREBASE/firebaseUtil';
 import { useDispatch } from 'react-redux';
-import { initializeUser } from './REDUX/userThunks';
+import { fetchUserData } from './REDUX/userThunks';
 
 function App() {
 	const dispatch = useDispatch();
@@ -23,7 +23,7 @@ function App() {
 		// firebsae initializes the authUser
 		// so reflect it in your store when the app mounts
 		return auth.onAuthStateChanged((authUser) => {
-			authUser && dispatch(initializeUser(authUser));
+			authUser && dispatch(fetchUserData(authUser));
 		});
 	}, []);
 

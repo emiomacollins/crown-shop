@@ -1,5 +1,5 @@
 import { createSelector, createSlice } from '@reduxjs/toolkit';
-import { initializeUser, signIn, signInWithGoogle, signOut, signUp } from './userThunks';
+import { fetchUserData, signIn, signInWithGoogle, signOut, signUp } from './userThunks';
 
 // SLICE DEFINITION
 const initialState = {
@@ -38,7 +38,7 @@ const userSlice = createSlice({
 		});
 
 		// FUFILLED
-		[initializeUser, signInWithGoogle, signUp].forEach((thunk) => {
+		[fetchUserData, signInWithGoogle, signUp].forEach((thunk) => {
 			builder.addCase(thunk.fulfilled, (state, { payload: { user, userData } }) => {
 				state.user = user;
 				state.userData = userData;

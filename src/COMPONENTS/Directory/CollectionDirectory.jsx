@@ -1,6 +1,6 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-import { WithCollectionsLoader } from '../../HOC/withLoader';
+import { WithCollections } from '../../HOC/withLoader';
 import { getCollectionsAsList } from '../../REDUX/collectionsState';
 import CollectionDirectoryItem from './CollectionDirectoryItem';
 
@@ -16,4 +16,4 @@ function CollectionDirectory() {
 	);
 }
 
-export default WithCollectionsLoader(CollectionDirectory);
+export default WithCollections(CollectionDirectory);

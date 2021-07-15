@@ -7,21 +7,16 @@ import {
 } from '../FIREBASE/firebaseUtil';
 import { clearCartItems } from './cartState';
 
-async function fetchUserData(uid) {
-	const userRef = firestore.doc(`users/${uid}`);
+// fires when authState changes i.e when you sign in / sign up
+// when you sign up the document has not been created so it breaks
+export const fetchUserData = createAsyncThunk('user/fetchUserData', async (user) => {
+	const userRef = firestore.doc(`users/${user.uid}`);
 	const snapShot = await userRef.get();
 
 	// skip fetching userData if user doesn't exist
 	if (!snapShot.exists) throw new Error();
 
 	const userData = snapShot.data();
-	return userData;
-}
-
-// fires when authState changes i.e when you sign in / sign up
-// when you sign up the document has not been created so it breaks
-export const initializeUser = createAsyncThunk('user/initializeUser', async (user) => {
-	const userData = await fetchUserData(user.uid);
 	return { user, userData };
 });
 

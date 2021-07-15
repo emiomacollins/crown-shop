@@ -9,6 +9,7 @@ const initialState = {
 	signUpErrorMessage: '',
 };
 
+// SLICE DEFINITION
 const userSlice = createSlice({
 	name: 'user',
 	initialState,

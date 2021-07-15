@@ -14,6 +14,8 @@ import {
 // & displaying the appropriate component if the data exists or if fetched successfully
 
 function WithLoader(params) {
+	// change this function to a render prop
+
 	// get selectors and action creators to implement loading logic
 	const { getLoading, getErrorMessage, fetchAction, getData, Component } = params;
 

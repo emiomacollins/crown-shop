@@ -43,4 +43,4 @@ function App() {
 export default App;
 
 // TODO
-// optimize directory images & host them
+// optimize directory images & host them on a CDN

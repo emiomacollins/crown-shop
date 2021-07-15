@@ -1,10 +1,12 @@
 import { createSelector, createSlice } from '@reduxjs/toolkit';
-import { initializeUser, signInWithGoogle, signOut, signUp } from './userThunks';
+import { initializeUser, signIn, signInWithGoogle, signOut, signUp } from './userThunks';
 
 // SLICE DEFINITION
 const initialState = {
 	user: null,
 	userData: null,
+	signInErrorMessage: '',
+	signUpErrorMessage: '',
 };
 
 const userSlice = createSlice({
@@ -13,35 +15,36 @@ const userSlice = createSlice({
 	reducers: {},
 
 	extraReducers: (builder) => {
-		[initializeUser, signInWithGoogle, signOut, signUp].forEach((thunk) => {
-			builder.addCase(thunk.rejected, (state, error) => {
-				console.log(error);
+		const thunks = [signInWithGoogle, signIn, signOut, signUp];
+
+		// PENDING
+		thunks.forEach((thunk) => {
+			builder.addCase(thunk.pending, (state) => {
+				state.signInErrorMessage = '';
+				state.signUpErrorMessage = '';
 			});
 		});
 
-		// INITIALIZE USER
-		builder.addCase(
-			initializeUser.fulfilled,
-			(state, { payload: { user, userData } }) => {
-				state.user = user;
-				state.userData = userData;
-			}
-		);
-
-		// SIGN UP
-		builder.addCase(signUp.fulfilled, (state, { payload: { user, userData } }) => {
-			state.user = user;
-			state.userData = userData;
+		// REJECTED
+		thunks.forEach((thunk) => {
+			builder.addCase(thunk.rejected, (state, { error }) => {
+				console.log(error);
+				if (thunk === signUp) {
+					state.signUpErrorMessage = error.message;
+					return;
+				}
+				state.signInErrorMessage = error.message;
+			});
 		});
 
-		// SIGN IN WITH GOOGLE
-		builder.addCase(
-			signInWithGoogle.fulfilled,
-			(state, { payload: { user, userData } }) => {
+		// FUFILLED
+		[initializeUser, signInWithGoogle, signUp].forEach((thunk) => {
+			builder.addCase(thunk.fulfilled, (state, { payload: { user, userData } }) => {
 				state.user = user;
 				state.userData = userData;
-			}
-		);
+				state.errorMessage = '';
+			});
+		});
 
 		// SIGN OUT
 		builder.addCase(signOut.fulfilled, (state) => {
@@ -60,6 +63,13 @@ export const { setUser, setUserData } = userSlice.actions;
 
 // SELECTORS
 const getUserState = (store) => store.user;
-
 export const getUser = createSelector(getUserState, ({ user }) => user);
 export const getUserData = createSelector(getUserState, ({ userData }) => userData);
+export const getSignInErrorMessage = createSelector(
+	getUserState,
+	({ signInErrorMessage }) => signInErrorMessage
+);
+export const getSignUpErrorMessage = createSelector(
+	getUserState,
+	({ signUpErrorMessage }) => signUpErrorMessage
+);

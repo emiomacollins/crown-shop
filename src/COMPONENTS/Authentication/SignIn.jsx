@@ -1,7 +1,9 @@
 import { useFormik } from 'formik';
 import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { withRouter } from 'react-router-dom';
+import { getSignInErrorMessage } from '../../REDUX/userState';
 import { signIn, signInWithGoogle } from '../../REDUX/userThunks';
 
 function SignIn() {
@@ -12,21 +14,29 @@ function SignIn() {
 		},
 		onSubmit: async (values) => {
 			const { email, password } = values;
-			// implement setMessage(signing in...)
+			setMessage('signing in...');
+			setErrorMessage('');
 			dispatch(signIn({ email, password }));
 		},
 	});
 
+	const dispatch = useDispatch();
 	const [message, setMessage] = useState('');
 	const [errorMessage, setErrorMessage] = useState('');
-	const dispatch = useDispatch();
+	const signInErrorMessage = useSelector(getSignInErrorMessage);
+	const { handleChange, handleSubmit, values } = formik;
+	const { email, password } = values;
 
 	async function handlesignInWithGoogle() {
 		dispatch(signInWithGoogle());
 	}
 
-	const { handleChange, handleSubmit, values } = formik;
-	const { email, password } = values;
+	useEffect(() => {
+		if (signInErrorMessage) {
+			setErrorMessage(signInErrorMessage);
+			setMessage('');
+		}
+	}, [signInErrorMessage]);
 
 	return (
 		<section className="signin">

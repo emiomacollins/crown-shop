@@ -10,7 +10,10 @@ import { clearCartItems } from './cartState';
 async function fetchUserData(uid) {
 	const userRef = firestore.doc(`users/${uid}`);
 	const snapShot = await userRef.get();
-	if (!snapShot.exists) throw new Error('skipped fetching userData');
+
+	// skip fetching userData if user doesn't exist
+	if (!snapShot.exists) throw new Error();
+
 	const userData = snapShot.data();
 	return userData;
 }
@@ -23,21 +26,32 @@ export const initializeUser = createAsyncThunk('user/initializeUser', async (use
 });
 
 export const signIn = createAsyncThunk('user/signIn', async ({ email, password }) => {
-	auth.signInWithEmailAndPassword(email, password);
+	try {
+		await auth.signInWithEmailAndPassword(email, password);
+	} catch (error) {
+		throw new Error(error.message);
+	}
 });
 
 export const signUp = createAsyncThunk(
 	'user/signUp',
 	async ({ email, password, displayName }) => {
-		const { user } = await auth.createUserWithEmailAndPassword(email, password);
-		const userData = await createUserDocument(user, { displayName });
-		return { user, userData };
+		try {
+			const { user } = await auth.createUserWithEmailAndPassword(email, password);
+			const userData = await createUserDocument(user, { displayName });
+			return { user, userData };
+		} catch (error) {
+			throw new Error(error.message);
+		}
 	}
 );
 
 export const signInWithGoogle = createAsyncThunk('user/signInWithGoogle', async () => {
 	const { additionalUserInfo, user } = await auth.signInWithPopup(googleProvider);
-	if (!additionalUserInfo.isNewUser) throw new Error('user Document creation failed');
+
+	// dont create user document if user already exists
+	if (!additionalUserInfo.isNewUser) throw new Error();
+
 	const userData = await createUserDocument(user);
 	return { user, userData };
 });

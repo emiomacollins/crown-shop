@@ -1,21 +1,39 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import StripeCheckout from 'react-stripe-checkout';
 import LogoPath from '../../ASSETS/Logo.svg';
-import { getCartItemsCount } from '../../REDUX/cartState';
+import { clearCartItems, getCartItemsCount } from '../../REDUX/cartState';
+import axios from 'axios';
 
 function StripePayButton({ price }) {
 	const cartItemsCount = useSelector(getCartItemsCount);
+	const dispatch = useDispatch();
 
-	function handleToken(token) {
-		// console.log(token);
+	// stripe uses cents
+	const stripePrice = price * 100;
+
+	async function handleToken(token) {
+		try {
+			await axios({
+				url: '/payment',
+				method: 'post',
+				data: {
+					token,
+					amount: stripePrice,
+				},
+			});
+
+			dispatch(clearCartItems());
+			alert(`Payment successful.`);
+		} catch (error) {
+			alert('payment error');
+		}
 	}
 
 	return (
 		<StripeCheckout
 			stripeKey={process.env.REACT_APP_STRIPE_PUBLISHABLE_KEY}
-			// stripe uses cents
-			amount={price * 100}
+			amount={stripePrice}
 			currency="USD"
 			name="crown shop"
 			description={`your total is $${price}`}

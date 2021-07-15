@@ -17,22 +17,18 @@ if (process.env.NODE_ENV !== 'production') {
 	require('dotenv').config();
 }
 
-// create an express app
+const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 const app = express();
-
-// use body parser to parse the request body to JSON
 app.use(bodyParser.json());
 // this is used to parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: true }));
-
-// cors
 app.use(cors());
 
 // this is used to serve static files from the public directory
 app.use(express.static(__dirname + '/client/build'));
 
 // listen for request on hommepage
-app.get('/', (req, res) => {
+app.get('*', (req, res) => {
 	// send the index.html file
 	res.sendFile(path.join(__dirname, 'client', 'build', 'index.html'));
 });
@@ -43,4 +39,21 @@ app.set('port', process.env.PORT || 5000);
 app.listen(app.get('port'), (err) => {
 	if (err) throw err;
 	console.log('Node app is running on port', app.get('port'));
+});
+
+// create charge with stripe
+app.post('/payment', (req, res) => {
+	const body = {
+		amount: req.body.amount,
+		source: req.body.token.id,
+		currency: 'usd',
+	};
+
+	stripe.charges.create(body, (err, charge) => {
+		if (err) {
+			res.sendStatus(500);
+		} else {
+			res.sendStatus(200);
+		}
+	});
 });

@@ -52,7 +52,6 @@ const collectionsState = createSlice({
 	},
 });
 
-// REDUCER
 const collectionsReducer = collectionsState.reducer;
 export default collectionsReducer;
 

@@ -19,9 +19,10 @@ import { fetchUserData } from './REDUX/userThunks';
 
 function App() {
 	const dispatch = useDispatch();
+
 	useEffect(() => {
-		// firebsae initializes the authUser
-		// so reflect it in your store when the app mounts
+		// on login/logout firebsae initializes the authUser
+		// so reflect it in the redux store when the app mounts
 		return auth.onAuthStateChanged((authUser) => {
 			authUser && dispatch(fetchUserData(authUser));
 		});

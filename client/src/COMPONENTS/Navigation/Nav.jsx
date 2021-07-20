@@ -9,9 +9,9 @@ import { getUser } from '../../REDUX/userState';
 import { signOut } from '../../REDUX/userThunks';
 
 export default function Nav() {
+	const dispatch = useDispatch();
 	const user = useSelector(getUser);
 	const [isExpanded, setIsExpanded] = useState(false);
-	const dispatch = useDispatch();
 
 	function toggleExpanded() {
 		setIsExpanded(!isExpanded);

@@ -3,12 +3,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getTheme, setTheme } from '../../REDUX/themeState';
 
 function ThemeToggle() {
+	const dispatch = useDispatch();
 	const theme = useSelector(getTheme);
 
 	document.querySelector(`html`).className = theme;
 	let isDarkmode = theme === 'darkmode';
-
-	const dispatch = useDispatch();
 
 	function handleSetDarkmode() {
 		dispatch(setTheme('darkmode'));

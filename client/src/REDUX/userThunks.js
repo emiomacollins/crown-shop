@@ -20,24 +20,17 @@ export const fetchUserData = createAsyncThunk('user/fetchUserData', async (user)
 	return { user, userData };
 });
 
+// createAyncThunk catches errors automatically and dispatches the rejected action
 export const signIn = createAsyncThunk('user/signIn', async ({ email, password }) => {
-	try {
-		await auth.signInWithEmailAndPassword(email, password);
-	} catch (error) {
-		throw new Error(error.message);
-	}
+	await auth.signInWithEmailAndPassword(email, password);
 });
 
 export const signUp = createAsyncThunk(
 	'user/signUp',
 	async ({ email, password, displayName }) => {
-		try {
-			const { user } = await auth.createUserWithEmailAndPassword(email, password);
-			const userData = await createUserDocument(user, { displayName });
-			return { user, userData };
-		} catch (error) {
-			throw new Error(error.message);
-		}
+		const { user } = await auth.createUserWithEmailAndPassword(email, password);
+		const userData = await createUserDocument(user, { displayName });
+		return { user, userData };
 	}
 );
 

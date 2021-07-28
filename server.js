@@ -10,6 +10,7 @@ if (process.env.NODE_ENV !== 'production') {
 }
 
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
+
 const app = express();
 // for parsing urls
 app.use(express.urlencoded({ extended: true }));
@@ -21,7 +22,7 @@ app.use(express.static(__dirname + '/client/build'));
 
 // serve index.html on all routes
 app.get('*', (req, res) => {
-	res.sendFile(path.join(__dirname, 'client', 'build', 'index.html'));
+	res.sendFile(path.join(__dirname, '/client/build/index.html'));
 });
 
 // use port 5000 in dev mode

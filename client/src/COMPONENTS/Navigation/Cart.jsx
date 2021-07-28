@@ -79,7 +79,7 @@ const Dropdown = styled.div`
 	background-color: var(--color-light);
 	top: 180%;
 	right: -5rem;
-	box-shadow: var(--shadow2);
+	box-shadow: var(--box-shadow);
 
 	::-webkit-scrollbar {
 		width: 6px;

@@ -1,5 +1,5 @@
 .nav {
-    box-shadow: var(--shadow);
+    box-shadow: var(--box-shadow-bottom);
     position: sticky;
     top: 0;
     left: 0;
@@ -122,7 +122,7 @@
             background: var(--color-dark);
             color: var(--color-light);
             border-radius: 2rem;
-            box-shadow: var(--shadow2);
+            box-shadow: var(--box-shadow);
             padding: 1rem;
             bottom: 2rem;
             right: 2rem;

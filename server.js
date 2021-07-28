@@ -1,11 +1,10 @@
 const express = require('express');
 const cors = require('cors');
-const bodyParser = require('body-parser');
 const path = require('path');
 
 if (process.env.NODE_ENV !== 'production') {
 	// we need to use dotenv to access environment variables when in development
-	// in production heroku passed the environment variables
+	// in production heroku supplies the environment variables
 	require('dotenv').config();
 }
 
@@ -19,13 +18,10 @@ app.use(cors());
 
 // specify where to find the static files
 app.use(express.static(__dirname + '/client/build'));
-
-// serve index.html on all routes
 app.get('*', (req, res) => {
 	res.sendFile(path.join(__dirname, '/client/build/index.html'));
 });
 
-// use port 5000 in dev mode
 app.set('port', process.env.PORT || 5000);
 app.listen(app.get('port'), (err) => {
 	if (err) throw err;
@@ -40,7 +36,7 @@ app.post('/payment', (req, res) => {
 		currency: 'usd',
 	};
 
-	stripe.charges.create(body, (err, charge) => {
+	stripe.charges.create(body, (err) => {
 		if (err) {
 			res.status(500).send(err);
 		} else {

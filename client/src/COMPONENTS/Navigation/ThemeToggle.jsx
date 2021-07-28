@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getTheme, setTheme } from '../../REDUX/themeState';
 
@@ -6,30 +6,22 @@ function ThemeToggle() {
 	const dispatch = useDispatch();
 	const theme = useSelector(getTheme);
 
-	document.querySelector(`html`).className = theme;
-	let isDarkmode = theme === 'darkmode';
+	useEffect(() => {
+		document.querySelector(`html`).className = theme;
+	}, [theme]);
 
-	function handleSetDarkmode() {
-		dispatch(setTheme('darkmode'));
-	}
-
-	function handleSetLightmode() {
-		dispatch(setTheme('lightmode'));
+	function handleSetTheme() {
+		dispatch(setTheme(theme === 'lightmode' ? 'darkmode' : 'lightmode'));
 	}
 
 	return (
 		<div>
-			{isDarkmode ? (
-				<i
-					onClick={handleSetLightmode}
-					className="fas fa-sun nav__theme-switch"
-				></i>
-			) : (
-				<i
-					onClick={handleSetDarkmode}
-					className="fas fa-moon nav__theme-switch"
-				></i>
-			)}
+			<i
+				onClick={handleSetTheme}
+				className={`fas fa-${
+					theme === 'darkmode' ? 'sun' : 'moon'
+				} nav__theme-switch`}
+			></i>
 		</div>
 	);
 }

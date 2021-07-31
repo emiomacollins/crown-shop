@@ -29,7 +29,7 @@ const userSlice = createSlice({
 		// REJECTED
 		thunks.forEach((thunk) => {
 			builder.addCase(thunk.rejected, (state, { error }) => {
-				console.log(error);
+				// console.log(error);
 				if (thunk === signUp) {
 					state.signUpErrorMessage = error.message;
 					return;

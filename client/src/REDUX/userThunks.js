@@ -38,6 +38,7 @@ export const signInWithGoogle = createAsyncThunk('user/signInWithGoogle', async 
 	const { additionalUserInfo, user } = await auth.signInWithPopup(googleProvider);
 
 	// dont create user document if user already exists
+	// fetchUserData will handle setting the user & userData
 	if (!additionalUserInfo.isNewUser) throw new Error();
 
 	const userData = await createUserDocument(user);

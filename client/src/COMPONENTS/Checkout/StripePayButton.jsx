@@ -14,7 +14,7 @@ function StripePayButton({ price }) {
 
 	async function handleToken(token) {
 		try {
-			await axios({
+			const res = await axios({
 				url: '/payment',
 				method: 'post',
 				data: {
@@ -23,7 +23,9 @@ function StripePayButton({ price }) {
 				},
 			});
 
-			dispatch(clearCartItems());
+			console.log(res);
+
+			// dispatch(clearCartItems());
 			alert(`Payment successful.`);
 		} catch (error) {
 			alert('payment error');

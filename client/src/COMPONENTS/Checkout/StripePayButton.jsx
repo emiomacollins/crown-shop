@@ -23,9 +23,9 @@ function StripePayButton({ price }) {
 				},
 			});
 
-			console.log(res);
+			// console.log(res);
 
-			// dispatch(clearCartItems());
+			dispatch(clearCartItems());
 			alert(`Payment successful.`);
 		} catch (error) {
 			alert('payment error');

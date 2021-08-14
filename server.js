@@ -3,22 +3,28 @@ const cors = require('cors');
 const path = require('path');
 
 if (process.env.NODE_ENV !== 'production') {
-	// we need to use dotenv to access environment variables when in development
-	// in production heroku supplies the environment variables
+	// dotenv populates process.env using the .env file
+	// in the root directory. when in production,
+	// heroku populates process.env
+
+	// we use git for deployment on heroku
+	// and we cant push the .env file to the git repo
+	// that's why we only use dotenv in development
+
+	// with this configuration the app uses .env
+	// in developement and uses heroku-injected
+	// environment variables in production
 	require('dotenv').config();
 }
 
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
-console.log(process.env.STRIPE_SECRET_KEY);
 
 const app = express();
-// for parsing urls
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(cors());
-
-// specify where to find the static files
 app.use(express.static(__dirname + '/client/build'));
+
 app.get('*', (req, res) => {
 	res.sendFile(path.join(__dirname, '/client/build/index.html'));
 });
@@ -32,6 +38,8 @@ app.listen(app.get('port'), (err) => {
 // create charge with stripe
 app.post('/payment', (req, res) => {
 	const body = {
+		// not safe, youre supposed to determine the
+		// price in the backend
 		amount: req.body.amount,
 		source: req.body.token.id,
 		currency: 'usd',

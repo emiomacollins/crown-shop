@@ -21,7 +21,7 @@ if (process.env.NODE_ENV !== 'production') {
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 
 const app = express();
-app.use(compression);
+app.use(compression());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(cors());

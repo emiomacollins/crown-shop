@@ -23,7 +23,7 @@ function StripePayButton({ price }) {
 				},
 			});
 
-			// console.log(res);
+			console.log(res);
 
 			dispatch(clearCartItems());
 			alert(`Payment successful.`);

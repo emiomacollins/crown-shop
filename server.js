@@ -4,7 +4,7 @@ const path = require('path');
 const compression = require('compression');
 
 if (process.env.NODE_ENV !== 'production') {
-	// dotenv populates process.env using the .env file
+	// dotenv populates process.env using the local .env file
 	// in the root directory. when in production,
 	// heroku populates process.env
 

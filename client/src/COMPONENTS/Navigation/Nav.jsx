@@ -18,7 +18,6 @@ export default function Nav() {
 	}
 
 	function handleSignOut() {
-		toggleExpanded();
 		dispatch(signOut());
 	}
 
@@ -27,12 +26,12 @@ export default function Nav() {
 			<div className="container">
 				<Logo />
 
-				<div className="nav__links">
-					<Link onClick={toggleExpanded} to="/shop" className="nav__link">
+				<div className="nav__links" onClick={toggleExpanded}>
+					<Link to="/shop" className="nav__link">
 						SHOP
 					</Link>
 
-					<Link onClick={toggleExpanded} to="/contact" className="nav__link">
+					<Link to="/contact" className="nav__link">
 						CONTACT
 					</Link>
 
@@ -41,7 +40,7 @@ export default function Nav() {
 							SIGN OUT
 						</Link>
 					) : (
-						<Link onClick={toggleExpanded} to="/signin" className="nav__link">
+						<Link to="/signin" className="nav__link">
 							SIGN IN
 						</Link>
 					)}
@@ -49,7 +48,7 @@ export default function Nav() {
 
 				<div className="nav__controls">
 					<Cart />
-					<div onClick={toggleExpanded} className="nav__hamburger">
+					<div className="nav__hamburger" onClick={toggleExpanded}>
 						<span className="line" />
 						<span className="line" />
 						<span className="line" />

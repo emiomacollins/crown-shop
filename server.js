@@ -38,7 +38,7 @@ app.listen(app.get('port'), (err) => {
 	console.log('Node app is running on port', app.get('port'));
 });
 
-// create charge with stripe
+// stripe
 app.post('/payment', (req, res) => {
 	const body = {
 		// not safe, youre supposed to determine the

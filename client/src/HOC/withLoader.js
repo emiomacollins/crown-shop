@@ -9,11 +9,6 @@ import {
 	getCollectionsLoadingState,
 } from '../REDUX/collectionsState';
 
-const ErrorMessage = styled.p`
-	text-align: center;
-	margin-top: 2rem;
-`;
-
 function WithLoader(params) {
 	// get selectors and action creators to implement loading logic
 	const { getLoading, getErrorMessage, fetchAction, getData, Component } = params;
@@ -51,3 +46,8 @@ export function WithCollections(Component) {
 		fetchAction: fetchCollections,
 	});
 }
+
+const ErrorMessage = styled.p`
+	text-align: center;
+	margin-top: 2rem;
+`;

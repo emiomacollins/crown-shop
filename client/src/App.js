@@ -21,8 +21,7 @@ function App() {
 	const dispatch = useDispatch();
 
 	useEffect(() => {
-		// on login/logout firebsae initializes the authUser
-		// so reflect it in the redux store when the app mounts
+		// on login, logout & pageload firebsae initializes the authUser
 		return auth.onAuthStateChanged((authUser) => {
 			authUser && dispatch(fetchUserData(authUser));
 		});

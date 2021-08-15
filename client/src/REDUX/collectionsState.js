@@ -16,7 +16,7 @@ export const fetchCollections = createAsyncThunk(
 
 		// firebase does not throw an error if there is no internet connection
 		// when trying to fetch a collection, it returns an empty snapshot instead
-		if (snapShot.empty) throw new Error('Failed to load collections, try again');
+		if (snapShot.empty) throw new Error('Failed to load collections');
 
 		const collections = {};
 		snapShot.docs.forEach((document) => {

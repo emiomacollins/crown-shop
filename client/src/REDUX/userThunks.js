@@ -12,10 +12,7 @@ import { clearCartItems } from './cartState';
 export const fetchUserData = createAsyncThunk('user/fetchUserData', async (user) => {
 	const userRef = firestore.doc(`users/${user.uid}`);
 	const snapShot = await userRef.get();
-
-	// skip fetching userData if user doesn't exist
 	if (!snapShot.exists) throw new Error();
-
 	const userData = snapShot.data();
 	return { user, userData };
 });

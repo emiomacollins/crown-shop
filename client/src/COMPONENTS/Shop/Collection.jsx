@@ -4,7 +4,6 @@ import { Link } from 'react-router-dom';
 
 function Collection({ collection, limit }) {
 	const dispatch = useDispatch();
-
 	let { title, items } = collection;
 
 	const itemsList = items.slice(0, limit ? limit : items.length).map((item) => {

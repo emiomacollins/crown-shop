@@ -38,7 +38,7 @@ const userSlice = createSlice({
 			});
 		});
 
-		// FUFILLED
+		// SIGN IN FUFILLED
 		[fetchUserData, signInWithGoogle, signUp].forEach((thunk) => {
 			builder.addCase(thunk.fulfilled, (state, { payload: { user, userData } }) => {
 				state.user = user;
@@ -47,7 +47,7 @@ const userSlice = createSlice({
 			});
 		});
 
-		// SIGN OUT
+		// SIGN OUT FUFILLED
 		builder.addCase(signOut.fulfilled, (state) => {
 			state.user = null;
 			state.userData = null;

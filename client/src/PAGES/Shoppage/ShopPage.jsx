@@ -1,13 +1,14 @@
 import React from 'react';
-import { Route, withRouter } from 'react-router-dom';
+import { Route, useRouteMatch } from 'react-router-dom';
 import CollectionList from '../../COMPONENTS/Shop/CollectionList';
 import Collection from '../../COMPONENTS/Shop/Collection';
 import { useSelector } from 'react-redux';
 import { getCollections } from '../../REDUX/collectionsState';
 import { WithCollections } from '../../HOC/withLoader';
 
-function ShopPage({ match }) {
+function ShopPage() {
 	const collections = useSelector(getCollections);
+	const match = useRouteMatch();
 
 	return (
 		<div className="collection-list container">
@@ -15,7 +16,7 @@ function ShopPage({ match }) {
 
 			<Route
 				path={`${match.path}/:collection`}
-				render={({ match }) => {
+				render={() => {
 					const collectionName = match.params.collection;
 					return <Collection collection={collections[collectionName]} />;
 				}}
@@ -24,4 +25,4 @@ function ShopPage({ match }) {
 	);
 }
 
-export default WithCollections(withRouter(ShopPage));
+export default WithCollections(ShopPage);

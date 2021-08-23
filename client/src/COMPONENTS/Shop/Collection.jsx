@@ -20,7 +20,6 @@ function Collection({ collection, limit }) {
 						<i className="fas fa-plus"></i>
 					</button>
 				</header>
-
 				<p>{name}</p>
 				<p>{price}$</p>
 			</div>
@@ -32,7 +31,6 @@ function Collection({ collection, limit }) {
 			<Link to={`/shop/${title}`}>
 				<h1 className="btn--link collection__title">{title}</h1>
 			</Link>
-
 			<div className="collection__items">{itemsList}</div>
 		</div>
 	);

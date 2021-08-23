@@ -31,9 +31,9 @@ export default function Nav() {
 						SHOP
 					</Link>
 
-					<Link to="/contact" className="nav__link">
+					{/* <Link to="/contact" className="nav__link">
 						CONTACT
-					</Link>
+					</Link> */}
 
 					{user ? (
 						<Link to="/signin" onClick={handleSignOut} className="nav__link">

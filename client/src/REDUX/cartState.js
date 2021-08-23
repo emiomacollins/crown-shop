@@ -12,9 +12,9 @@ const cartSlice = createSlice({
 	name: 'cart',
 	initialState,
 	reducers: {
-		addCartItem(state, { payload }) {
+		addCartItem(state, { payload: item }) {
 			// check if item exists in cart
-			const index = findItemIndex(state.cartItems, payload);
+			const index = findItemIndex(state.cartItems, item);
 
 			// if it exists increase quantity
 			if (index >= 0) {
@@ -22,15 +22,18 @@ const cartSlice = createSlice({
 				return;
 			}
 
-			state.cartItems.push({ ...payload, quantity: 1 });
+			state.cartItems.push({ ...item, quantity: 1 });
 		},
 
-		removeCartItem(state, { payload }) {
-			state.cartItems = state.cartItems.filter((item) => item.id !== payload.id);
+		removeCartItem(state, { payload: item }) {
+			state.cartItems = state.cartItems.filter(
+				(existingItem) => existingItem.id !== item.id
+			);
 		},
 
-		DecreaseCartItemQuantity(state, { payload }) {
-			const index = findItemIndex(state.cartItems, payload);
+		DecreaseCartItemQuantity(state, { payload: item }) {
+			const index = findItemIndex(state.cartItems, item);
+
 			if (index >= 0) {
 				state.cartItems[index].quantity =
 					state.cartItems[index].quantity - 1 || 1;

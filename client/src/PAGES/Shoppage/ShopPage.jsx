@@ -15,10 +15,11 @@ function ShopPage() {
 			<Route exact path={match.path} component={CollectionList} />
 
 			<Route
+				exact
 				path={`${match.path}/:collection`}
-				render={() => {
-					const collectionName = match.params.collection;
-					return <Collection collection={collections[collectionName]} />;
+				render={({ match }) => {
+					const collection = collections[match.params.collection];
+					return <Collection collection={collection} />;
 				}}
 			/>
 		</div>
